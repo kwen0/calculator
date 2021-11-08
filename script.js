@@ -40,16 +40,14 @@ function operate(a, operation, b) {
 }
 
 function getDisplayNumber() {
-    expression.push(parseInt(display.textContent));
+    expression.push(parseFloat(display.textContent));
 }
 
 function evalExpression() {
-    if (expression.length == 3) {
-        result = operate(expression[0], expression[1], expression[2]);
-        expression[0] = result;
-        expression.splice(1,2);
-        display.textContent = result;
-    }
+    result = operate(expression[0], expression[1], expression[2]);
+    expression[0] = result;
+    expression.splice(1,2);
+    display.textContent = result;
 }
 
 function clearDisplay() {
@@ -66,7 +64,9 @@ digits.forEach(button => {button.addEventListener('click', function(e) {
 operations.forEach(operation => {
     operation.addEventListener('click', () => {
         getDisplayNumber();
-        evalExpression();
+        if (expression.length == 3) {
+            evalExpression();
+        }
         if (operation.classList.contains("add")) {
             expression.push("add");
         } else if (operation.classList.contains("subtract")) {
@@ -85,8 +85,8 @@ equalButton.addEventListener('click', () => {
     if (expression[1] == "divide" && expression[2] == 0) {
         display.textContent = "Nope"
     } else {
-        result = operate(expression[0], expression[1], expression[2]);
-        display.textContent = result;
+        evalExpression();
+        expression.splice(0, expression.length);
     }
 })
 
